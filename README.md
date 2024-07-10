@@ -10,54 +10,62 @@ This project is a technical test for Bloomays, involving a full-stack applicatio
 
 1. Navigate to the backend directory:
 
-    ```
+    ```sh
     cd backend
-
     ```
 
 2. Install dependencies:
 
     ```sh
     npm install
-
     ```
 
 3. Start the backend server:
+
     ```sh
     node server.js
     ```
 
-The backend server will run on http://localhost:3001.
+The backend server will run on [http://localhost:3001](http://localhost:3001).
 
 ### Frontend
 
-Navigate to the frontend directory:
+1. Navigate to the frontend directory:
 
-sh
-Copier le code
-cd ../frontend
-Install dependencies:
+    ```sh
+    cd ../frontend
+    ```
 
-sh
-Copier le code
-npm install
-Start the frontend server:
+2. Install dependencies:
 
-sh
-Copier le code
-npm start
-The frontend server will run on http://localhost:3000.
+    ```sh
+    npm install
+    ```
 
-Bonus: Airtable Integration
+3. Start the frontend server:
+
+    ```sh
+    npm start
+    ```
+
+The frontend server will run on [http://localhost:3000](http://localhost:3000).
+
+### Bonus: Airtable Integration
+
 To integrate Airtable, follow these steps:
 
-Install Airtable package:
+1. Install Airtable package:
 
-sh
-Copier le code
-cd backend
-npm install airtable
-Update the backend server code (server.js) to fetch data from Airtable.
+    ```sh
+    cd backend
+    npm install airtable
+    ```
 
-License
-This project is licensed under the MIT License.
+2. Update the backend server code (`server.js`) to fetch data from Airtable.
+
+3. Add a `.env` file in the backend directory with the following content (replace `YOUR_API_KEY` and `YOUR_BASE_ID` with your actual Airtable API key and base ID):
+
+    ```env
+    AIRTABLE_ACCESS_TOKEN=YOUR_ACCESS_TOKEN
+    AIRTABLE_BASE_ID=YOUR_BASE_ID
+    ```
