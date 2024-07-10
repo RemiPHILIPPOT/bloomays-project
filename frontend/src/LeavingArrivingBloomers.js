@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import "./LeavingArrivingBloomers.css";
 
 const LeavingArrivingBloomers = () => {
     const [arriving, setArriving] = useState({});
     const [leaving, setLeaving] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(
-                    "http://localhost:3001/missions"
-                );
-                const missions = response.data;
+                const response = await fetch("http://localhost:3001/missions");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const missions = await response.json();
 
                 const today = new Date();
                 const endOfNextMonth = new Date(
@@ -66,38 +68,81 @@ const LeavingArrivingBloomers = () => {
         fetchData();
     }, []);
 
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
     return (
-        <div>
-            <h2>Bloomers Entrant</h2>
-            {Object.keys(arriving).map((date) => (
-                <div key={date}>
-                    <h3>{date}</h3>
-                    <ul>
-                        {arriving[date].map((bloomer) => (
-                            <li key={bloomer.id}>
-                                {bloomer.firstname} {bloomer.lastname} (Début:{" "}
-                                {bloomer.beginMission}, Fin:{" "}
-                                {bloomer.endMission})
-                            </li>
-                        ))}
-                    </ul>
+        <div className="modal-bloomers">
+            <button onClick={toggleModal} className="open-modal-button">
+                Open Bloomers Info
+            </button>
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-container">
+                        <button
+                            onClick={toggleModal}
+                            className="close-modal-button"
+                        >
+                            &times;
+                        </button>
+                        <div className="bloomers-container">
+                            <div className="bloomers-section">
+                                <h2 className="bloomers-title arriving">
+                                    Bloomers Entrants
+                                </h2>
+                                {Object.keys(arriving).map((date) => (
+                                    <div
+                                        key={date}
+                                        className="bloomers-date-group"
+                                    >
+                                        <h3 className="bloomers-date">
+                                            {date}
+                                        </h3>
+                                        <ul className="bloomers-list">
+                                            {arriving[date].map((bloomer) => (
+                                                <li
+                                                    key={bloomer.id}
+                                                    className="bloomer-item"
+                                                >
+                                                    {bloomer.firstname}{" "}
+                                                    {bloomer.lastname}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="bloomers-section">
+                                <h2 className="bloomers-title leaving">
+                                    Bloomers Sortants
+                                </h2>
+                                {Object.keys(leaving).map((date) => (
+                                    <div
+                                        key={date}
+                                        className="bloomers-date-group"
+                                    >
+                                        <h3 className="bloomers-date">
+                                            {date}
+                                        </h3>
+                                        <ul className="bloomers-list">
+                                            {leaving[date].map((bloomer) => (
+                                                <li
+                                                    key={bloomer.id}
+                                                    className="bloomer-item"
+                                                >
+                                                    {bloomer.firstname}{" "}
+                                                    {bloomer.lastname}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            ))}
-            <h2>Bloomers Sortant</h2>
-            {Object.keys(leaving).map((date) => (
-                <div key={date}>
-                    <h3>{date}</h3>
-                    <ul>
-                        {leaving[date].map((bloomer) => (
-                            <li key={bloomer.id}>
-                                {bloomer.firstname} {bloomer.lastname} (Début:{" "}
-                                {bloomer.beginMission}, Fin:{" "}
-                                {bloomer.endMission})
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
+            )}
         </div>
     );
 };
